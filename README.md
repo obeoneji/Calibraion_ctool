@@ -34,7 +34,7 @@ Please use latest release. You will also need Visual Studio Build Tools.
 
 This will take a while.
 Then you should complie OpenCV and OpenCV contrib. Download v4.9.0 in opencv( https://opencv.org/releases/) and opencv-contrib(https://github.com/opencv/opencv_contrib/releases/tag/4.9.0).
-Extract opencv_contrib and Place files in the opencv folder \path\to\your\opencvdir\opencv_contrib-4.9.0, compile and install OpenCV:
+Extract opencv_contrib and Place files in the opencv folder `\path\to\your\opencvdir\opencv_contrib-4.9.0, compile and install OpenCV`:
 
     //opencv
     mkdir build
