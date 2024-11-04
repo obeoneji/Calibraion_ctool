@@ -1,0 +1,2 @@
+OpenCV C:\Users\Mayn\work\3rdparty\opencv
+vcpkg C:\Users\Mayn\work\3rdparty\vcpkg-2024.10.21
