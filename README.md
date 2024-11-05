@@ -42,7 +42,7 @@ Extract opencv_contrib and Place files in the opencv folder `\path\to\your\openc
     cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\Users\Mayn\work\3rdparty\vcpkg-2024.10.21/scripts/buildsystems/vcpkg.cmake -DCMAKE_INSTALL_PREFIX=C:\Users\Mayn\work\3rdparty\opencv\install -DBUILD_SHARED_LIBS=ON -DOPENCV_EXTRA_MODULES_PATH=C:\Users\Mayn\work\3rdparty\opencv\opencv_contrib-4.9.0\modules
     cmake --build . --config Release
     cmake --install .
-Then, add `\path\to\your\opencvdir\opencv-4.9.0\install\x64\vc16\bin` to your system environment variables. Lastly, Replace `your_OpenCV_install_dir` in `\path\to\your\calibmar_dir\src\app\CMakeLists.txt` and `\path\to\your\calibmar_dir\src\calibmar\CMakeLists.txt`.
+Then, add `\path\to\your\opencvdir\opencv-4.9.0\install\x64\vc16\bin` to your system environment variables. Lastly, replace `your_OpenCV_install_dir` in `\path\to\your\calibmar_dir\src\app\CMakeLists.txt` and `\path\to\your\calibmar_dir\src\calibmar\CMakeLists.txt`.
 Configure and compile Calibraion_ctool:
 
 	cd path/to/calibmar
