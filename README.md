@@ -29,7 +29,6 @@ Please use latest release. You will also need Visual Studio Build Tools.
     cd vcpkg
     bootstrap-vcpkg.sh
     vcpkg install colmap[cuda]:x64-windows
-    vcpkg install opencv[contrib]:x64-windows
     vcpkg install g2o:x64-windows
 
 This will take a while.
