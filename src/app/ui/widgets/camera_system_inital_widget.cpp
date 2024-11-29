@@ -11,7 +11,8 @@ namespace calibmar {
     // QSpinBox*  camNumSpinBox = new QSpinBox(this);
     camNumSpinBox->setRange(0, 10); // 设置范围
     camNumSpinBox->setValue(1); // 初始值
-    camNumSpinBox->setFixedSize(20, 20);
+    camNumSpinBox->setSingleStep(1);
+    // camNumSpinBox->setFixedSize(20, 20);
 
     // QSpinBox* rootCamSpinBox = new QSpinBox(this);
     rootCamSpinBox->setRange(0, 10);

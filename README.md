@@ -30,6 +30,7 @@ Please use latest release. You will also need Visual Studio Build Tools.
     bootstrap-vcpkg.sh
     vcpkg install colmap[cuda]:x64-windows
     vcpkg install g2o:x64-windows
+    vcpkg install openexr
 
 This will take a while.
 Then you should complie OpenCV and OpenCV contrib. Download v4.9.0 in opencv( https://opencv.org/releases/) and opencv-contrib(https://github.com/opencv/opencv_contrib/releases/tag/4.9.0).
