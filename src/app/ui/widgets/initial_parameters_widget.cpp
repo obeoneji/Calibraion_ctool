@@ -2,7 +2,7 @@
 
 namespace calibmar {
 
-  InitialParametersWidget::InitialParametersWidget(QWidget* parent, bool show_checkbox) : QWidget(parent),layout_main(new QVBoxLayout(this)),layout(new QHBoxLayout(this)), parameters_layout(new QVBoxLayout(this)),camNumSpinBox(new QSpinBox(this)){
+  InitialParametersWidget::InitialParametersWidget(QWidget* parent, bool show_checkbox) : QWidget(parent),layout_main(new QVBoxLayout(this)),layout(new QHBoxLayout(this)),camNumLabel_(new QLabel("Camera Num:",this)),parameters_layout(new QVBoxLayout(this)),camNumSpinBox(new QSpinBox(this)){
     parameters_edit_ = new QLineEdit(this);
     parameters_edit_->setPlaceholderText("Initial Parameters");
     parameters_checkbox_ = new QCheckBox(this);
@@ -16,6 +16,7 @@ namespace calibmar {
     // QHBoxLayout* layout = new QHBoxLayout(this);
     // 添加 parameters_checkbox_
     layout->addWidget(parameters_checkbox_);
+    layout->addWidget(camNumLabel_);
     // 添加 QSpinBox
     // QSpinBox* camNumSpinBox = new QSpinBox(this);
     camNumSpinBox->setRange(0, 10); // 设置范围

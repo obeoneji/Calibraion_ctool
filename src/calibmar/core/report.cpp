@@ -207,7 +207,7 @@ namespace calibmar {
       stream << "camnum: "<< calibration.cam_num << std::endl;
       stream << "# " << camera.ParamsInfo() << std::endl;
       // parameters
-      for (size_t i = 0; i < calibrations.size(); i++) {
+      for (size_t i = 0; i < calibration.cam_num ; i++) {
         const Calibration& calibration =*calibrations[i];
         const colmap::Camera& camera = calibration.Camera();
         stream << "parameters: [";
@@ -639,7 +639,7 @@ namespace calibmar {
     }
   }
 
-  ImportedParameters ImportedParameters::ImportFromYaml(const std::string& path) {
+  ImportedParameters ImportedParameters::ImportFromYaml(const std::string& path,bool is_dome) {
     ImportedParameters parameters;
 
     std::filesystem::path file_path(path);
@@ -649,15 +649,17 @@ namespace calibmar {
 
     std::ifstream input(path);
 
-    parameters = ImportFromYaml(input);
+    parameters = ImportFromYaml(input, is_dome);
     parameters.directory = file_path.parent_path().string();
 
     return parameters;
   }
 
-  ImportedParameters ImportedParameters::ImportFromYaml(std::istream& stream) {
+  ImportedParameters ImportedParameters::ImportFromYaml(std::istream& stream,bool is_dome) {
     ImportedParameters parameters;
     std::string line;
+    bool model_param_check=false;
+    bool model_check=false;
     bool first_house=true;
     while (std::getline(stream, line)) {
       TrimEnd(line);
@@ -697,20 +699,38 @@ namespace calibmar {
         std::vector<std::string> values = colmap::CSVToVector<std::string>(line);
         Parse(values, 0, &parameters.camnum);
       }
-      else if (StartsWith(line, "parameters: [")) {
-        line.erase(0, sizeof("parameters: [") - 1);
+      // else if (StartsWith(line, "parameters: [")) {
+      //   line.erase(0, sizeof("parameters: [") - 1);
+      //   double p;
+      //   size_t chars_used;
+      //   std::vector<double> current_parameters; //liheng3
+      //   while (TryParse(&p, line, &chars_used)) {
+      //     // parameters.camera_parameters.push_back(p);
+      //     current_parameters.push_back(p);//liheng3
+      //     // + the comma or closing bracket
+      //     line.erase(0, chars_used + 1);
+      //   }
+      //   parameters.camera_parameters.push_back(current_parameters);//liheng3
+      // }
+      else if (StartsWith(line, "parameters: [") || StartsWith(line,"parameters_before_undistortion: [")) {
+        std::string prefix = line.substr(0, line.find('[') + 1); // Get the prefix
+        std::string parameters_line = line.substr(line.find('[') + 1);
+        parameters_line.erase(parameters_line.end() - 1); // Remove the closing bracket
+
         double p;
         size_t chars_used;
-        std::vector<double> current_parameters; //liheng3
-        while (TryParse(&p, line, &chars_used)) {
-          // parameters.camera_parameters.push_back(p);
-          current_parameters.push_back(p);//liheng3
-          // + the comma or closing bracket
-          line.erase(0, chars_used + 1);
+        std::vector<double> current_parameters; // Store current parameters
+
+        while (TryParse(&p, parameters_line, &chars_used)) {
+            current_parameters.push_back(p);
+            // Move to the next parameter, skipping the comma or space
+            parameters_line.erase(0, chars_used + 1);
         }
-        parameters.camera_parameters.push_back(current_parameters);//liheng3
-      }
+
+        parameters.camera_parameters.push_back(current_parameters); // Add to the list of camera parameters
+    }
       else if (StartsWith(line, "non_svp_model:")) {
+        model_check=true;
         line.erase(0, sizeof("non_svp_model: ") - 1);
         for (auto& [type, model] : HousingInterface::HousingInterfaces()) {
           if (model.model_name == line) {
@@ -733,6 +753,7 @@ namespace calibmar {
           line.erase(0, chars_used + 1);
         }
         first_house=false;
+        model_param_check=true;
       }
       else if (StartsWith(line, "# target: chessboard,")) {
         parameters.calibration_target = CalibrationTargetType::Chessboard;
@@ -783,7 +804,25 @@ namespace calibmar {
         Parse(values, 7, &parameters.frame_num);
       }      
     }
+    if (is_dome && model_check==false && model_param_check==false) {
+      for (auto& [type, model] : HousingInterface::HousingInterfaces()) {
+        if (model.model_name == "DOMEPORT") {
+          parameters.housing_model = type;
+          break;
+        }
+      }
+    
+      double p;
+      size_t chars_used;
+      std::string house_params = "0.005,0,0,0.05,0.0001,1.0,1.473,1.334";
 
+      while (TryParse(&p, house_params, &chars_used)) 
+      {
+        parameters.housing_parameters.push_back(p);
+        // 移除解析后的数字和逗号
+        house_params.erase(0, chars_used + 1);
+      }
+    }
     return parameters;
   }
 }

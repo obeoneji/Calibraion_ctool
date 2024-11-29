@@ -4,7 +4,7 @@
 // #include <opencv2/objdetect/aruco_dictionary.hpp>
 namespace calibmar {
 
-  enum class CalibrationTargetType { Chessboard, ArucoGridBoard, Target3D, Target3DAruco,CharucoBoard};
+  enum class CalibrationTargetType { CharucoBoard,Chessboard, ArucoGridBoard, Target3D, Target3DAruco};
 
   enum class ArucoMarkerTypes {
     DICT_4X4_50 = cv::aruco::DICT_4X4_50,

@@ -19,7 +19,8 @@ namespace calibmar {
   //   }
   // }
 
-  CharucoBoardFeatureExtractor::CharucoBoardFeatureExtractor(const Options& options) : options_(options) {
+  CharucoBoardFeatureExtractor::CharucoBoardFeatureExtractor(const Options& options) : options_(options) 
+  {
     // generate 3D points for Charuco board
     for (int j=0;j<options_.board_index;j++)
     {
@@ -44,8 +45,6 @@ namespace calibmar {
         idx++;
       }
     }    
-
-
   }
     // std::vector<Eigen::Vector3d> get3DPointsFromCharucoIds(const std::vector<int>& charucoIds) {
     //   std::vector<Eigen::Vector3d> points3D;
@@ -57,7 +56,8 @@ namespace calibmar {
 
     //   return points3D;
     // }
-  FeatureExtractor::Status CharucoBoardFeatureExtractor::Extract(Image& image, const Pixmap& pixmap) {
+  FeatureExtractor::Status CharucoBoardFeatureExtractor::Extract(Image& image, const Pixmap& pixmap)
+   {
     if (pixmap.Width() <= 0 || pixmap.Height() <= 0) {
       return Status::DETECTION_ERROR;
     }
@@ -142,13 +142,14 @@ namespace calibmar {
 
         return Status::SUCCESS;}
     }
-    else{
+    else
+    {
       cv::Mat image_data(pixmap.Data());
       cv::Mat grayImage;
       cv::cvtColor(image_data, grayImage, cv::COLOR_BGR2GRAY);
       int board_count=0;
       image.ClearCorrespondences_withboard();
-      for(int j=0 ; j<options_.board_index;j++)
+      for (int j=0; j<options_.board_index; j++)
       {   
         std::vector<int> marker_ids;
         std::vector<std::vector<cv::Point2f>> marker_corners, rejected_candidates;
@@ -164,7 +165,8 @@ namespace calibmar {
     // static_cast<int>(options_.aruco_type
         cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(static_cast<int>(options_.aruco_type));
         std::vector<int> ids(options_.marker_num);
-        for (int i = 0; i <options_.marker_num; i++) {
+        for (int i = 0; i <options_.marker_num; i++) 
+        {
             ids[i] = j * options_.marker_num + i;
         }
         cv::Ptr<cv::aruco::CharucoBoard> board = new cv::aruco::CharucoBoard(cv::Size(options_.columns ,options_.rows),

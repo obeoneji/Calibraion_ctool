@@ -9,7 +9,7 @@
 #include "calibmar/readers/livestream_reader.h"
 #include "calibmar/version.h"
 #include "ui/dialogs/housing_diagram_dialog.h"
-#include "ui/dialogs/license_dialog.h"
+// #include "ui/dialogs/license_dialog.h"
 #include "ui/dialogs/model_explorer_dialog.h"
 #include "ui/dialogs/stereo_file_calibration_dialog.h"
 #include "ui/dialogs/stream_calibration_dialog.h"
@@ -300,7 +300,7 @@ namespace calibmar {
     QMessageBox::about(this, "About Calibmar",
                        QString::fromStdString("<h2>Calibmar " + CALIBMAR_VERSION + "</h2>\n<p>Commit ID: " + CALIBMAR_COMMIT_ID +
                                               ", Commit date: " + CALIBMAR_COMMIT_DATE + ", " + CALIBMAR_CUDA_ENABLED +
-                                              "</p>\n<p><strong>Author:</strong> Felix Seegräber</p>"));
+                                              "</p>\n<p><strong>Author:</strong> Li Heng</p>\n"+CALIBMAR_PURPOSE));
   }
 
   void MainWindow::CreateActions() {
@@ -339,11 +339,11 @@ namespace calibmar {
     });
 
     QMenu* helpMenu = menuBar()->addMenu("&Help");
-    helpMenu->addAction("&Licenses", this, []() {
-      LicenseDialog dialog;
-      dialog.resize(500, 500);
-      dialog.exec();
-    });
+    // helpMenu->addAction("&Licenses", this, []() {
+    //   LicenseDialog dialog;
+    //   dialog.resize(500, 500);
+    //   dialog.exec();
+    // });
     helpMenu->addAction("&About", this, &MainWindow::About);
   }
 

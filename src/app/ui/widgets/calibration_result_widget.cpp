@@ -120,7 +120,7 @@ td {
                 break;
             case 2:
                 // 处理未知索引的情况
-                solverName = "Dense";
+                g2o_solver_name = "Dense";
                 break;
         }
           stream << "<p>" << "<h3>G2O solver:</h3>" << std::endl

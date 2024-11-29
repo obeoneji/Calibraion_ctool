@@ -68,7 +68,7 @@ namespace calibmar {
     bool g2o_options=false;
     int solver_index=1;
     // Type of calibration target
-    CalibrationTargetType calibration_target = CalibrationTargetType::Chessboard;
+    CalibrationTargetType calibration_target = CalibrationTargetType::CharucoBoard;
     // Directory of the imported parameters/calibration
     std::string directory;
     // Type of camera model used
@@ -81,7 +81,7 @@ namespace calibmar {
     // housing parameters (only if housing calibration)
     std::vector<double> housing_parameters;
 
-    static ImportedParameters ImportFromYaml(const std::string& path);
-    static ImportedParameters ImportFromYaml(std::istream& stream);
+    static ImportedParameters ImportFromYaml(const std::string& path,bool is_dome);
+    static ImportedParameters ImportFromYaml(std::istream& stream,bool is_dome);
   };
 }

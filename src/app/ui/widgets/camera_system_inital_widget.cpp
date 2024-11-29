@@ -2,7 +2,7 @@
 
 namespace calibmar {
 
-  CameraSystemInitalWidget::CameraSystemInitalWidget(QWidget* parent) : QWidget(parent),layout(new QVBoxLayout(this)),formLayout_target_type(new QFormLayout(this)),camNumSpinBox(new QSpinBox(this)),rootCamSpinBox(new QSpinBox(this)),camNumLabel(new QLabel("Camera Num:", this)),rootCamLabel(new QLabel("Root Cam:", this)){
+  CameraSystemInitalWidget::CameraSystemInitalWidget(QWidget* parent) : QWidget(parent),layout(new QVBoxLayout(this)),formLayout_target_type(new QFormLayout(this)),camNumSpinBox(new QSpinBox(this)),rootCamSpinBox(new QSpinBox(this)),camNumLabel(new QLabel("Camera Num:", this)),rootCamLabel(new QLabel("Root Cam:(start from 1)", this)){
     // QLabel* camNumLabel = new QLabel(this);
     // QLabel* rootCamLabel = new QLabel(this);
     // camNumLabel->setText("Camera Num:");

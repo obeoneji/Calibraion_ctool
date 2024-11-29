@@ -33,12 +33,12 @@ namespace calibmar {
     // }
     if(!initial_camera_count_.value())
     {
-      QMessageBox::information(this, "Validation Error", "initial_camera_count_=1");
+      QMessageBox::information(this, "Validation Error", "camera count not valid");
       return false;
     }
     if(!root_cam_.value())
     {
-      QMessageBox::information(this, "Validation Error", "root_cam_!=1");
+      QMessageBox::information(this, "Validation Error", "root cam not valid");
       return false;
     }
     if(root_cam_.value()>initial_camera_count_.value())
