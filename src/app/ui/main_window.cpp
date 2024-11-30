@@ -300,7 +300,7 @@ namespace calibmar {
     QMessageBox::about(this, "About Calibmar",
                        QString::fromStdString("<h2>Calibmar " + CALIBMAR_VERSION + "</h2>\n<p>Commit ID: " + CALIBMAR_COMMIT_ID +
                                               ", Commit date: " + CALIBMAR_COMMIT_DATE + ", " + CALIBMAR_CUDA_ENABLED +
-                                              "</p>\n<p><strong>Author:</strong> Li Heng</p>\n"+CALIBMAR_PURPOSE));
+                                              "</p>\n<p><strong>Author:</strong> Li Heng</p>\n</p>This software is intended for academic research purposes only. "));
   }
 
   void MainWindow::CreateActions() {
