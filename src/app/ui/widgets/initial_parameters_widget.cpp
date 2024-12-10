@@ -21,7 +21,7 @@ namespace calibmar {
     // QSpinBox* camNumSpinBox = new QSpinBox(this);
     camNumSpinBox->setRange(0, 10); // 设置范围
     camNumSpinBox->setValue(1); // 初始值
-    camNumSpinBox->setFixedSize(20, 20);
+    //camNumSpinBox->setFixedSize(20, 20);
     layout->addWidget(camNumSpinBox);
         // 设置布局间距和边距
     layout->setSpacing(5);
