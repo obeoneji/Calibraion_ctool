@@ -153,9 +153,9 @@ td {
           const std::string  cam_string_before="Camera "+std::to_string(i);
           FormatMatrixToHtml(stream, calibration.InitalPose(i),cam_string_before);
         }
-        // overall rms
-        stream << std::endl << "<h3>Overall RMS:</h3>\n<p>" << calibration.CalibrationRms() << "</p>\n";   
       }
+      // overall rms
+      stream << std::endl << "<h3>Overall RMS:</h3>\n<p>" << calibration.CalibrationRms() << "</p>\n";   
 
       // // optional stereo pose
       // if (calibration.CameraToWorldStereo().has_value()) {

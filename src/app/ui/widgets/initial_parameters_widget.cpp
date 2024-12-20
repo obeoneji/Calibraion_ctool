@@ -4,13 +4,8 @@ namespace calibmar {
 
   InitialParametersWidget::InitialParametersWidget(QWidget* parent, bool show_checkbox) : QWidget(parent),layout_main(new QVBoxLayout(this)),layout(new QHBoxLayout(this)),camNumLabel_(new QLabel("Camera Num:",this)),parameters_layout(new QVBoxLayout(this)),camNumSpinBox(new QSpinBox(this)){
     parameters_edit_ = new QLineEdit(this);
-    parameters_edit_->setPlaceholderText("Initial Parameters");
+    parameters_edit_->setPlaceholderText("Parameter cam1");
     parameters_checkbox_ = new QCheckBox(this);
-
-    connect(parameters_checkbox_, &QCheckBox::stateChanged, this,
-            [this](int state) { parameters_edit_->setEnabled(parameters_checkbox_->isChecked()); });
-    parameters_edit_->setEnabled(parameters_checkbox_->isChecked());
-    parameters_checkbox_->setVisible(show_checkbox);
 
     // QVBoxLayout* layout_main = new QVBoxLayout(this);
     // QHBoxLayout* layout = new QHBoxLayout(this);
@@ -19,7 +14,7 @@ namespace calibmar {
     layout->addWidget(camNumLabel_);
     // 添加 QSpinBox
     // QSpinBox* camNumSpinBox = new QSpinBox(this);
-    camNumSpinBox->setRange(0, 10); // 设置范围
+    camNumSpinBox->setRange(1, 10); // 设置范围
     camNumSpinBox->setValue(1); // 初始值
     //camNumSpinBox->setFixedSize(20, 20);
     layout->addWidget(camNumSpinBox);
@@ -42,6 +37,11 @@ namespace calibmar {
 
     layout_main->addStretch(); 
     count=camNumSpinBox->value();
+
+    connect(parameters_checkbox_, &QCheckBox::stateChanged, this,
+        [this](int state) { camNumSpinBox->setEnabled(parameters_checkbox_->isChecked());});
+    parameters_edit_->setEnabled(true);
+    parameters_checkbox_->setVisible(show_checkbox);
   }
 
   void InitialParametersWidget::updateInitialParameters(int value) {
@@ -56,7 +56,7 @@ namespace calibmar {
       QLineEdit* new_edit = new QLineEdit(this);
       new_edit->setPlaceholderText(QString("Parameter cam%1").arg(i + 1));
       // new_edit->setEnabled(true); // 根据复选框设置启用状态
-      new_edit->setVisible(true);
+      new_edit->setVisible(parameters_checkbox_->isChecked());
       parameters_layout->addWidget(new_edit);
     }
     return;
@@ -74,7 +74,7 @@ namespace calibmar {
     parameters_checkbox_->setChecked(!parameters.empty());
     
     if (!parameters.empty()) {
-      for (int i = 0; i < parameters.size(); ++i) {
+      for (int i = 0; i < parameters.size(); i++) {
         QLayoutItem* item = parameters_layout->itemAt(i); // 获取布局中的第 i 个项
         if (item) {
           QWidget* widget = item->widget(); // 获取该项的 widget

@@ -51,6 +51,12 @@ namespace calibmar {
     double CalibrationRms() const;
     void SetCalibrationRms(double rms);
 
+    double Projectionerr_before() const;
+
+    void Setprojectionerr_before(double error);
+
+    double Projectionerr_ba() const;
+    void Setprojectionerr_ba(double error);
     std::vector<double>& IntrinsicsStdDeviations();
     const std::vector<double>& IntrinsicsStdDeviations() const;
     void SetIntrinsicsStdDeviations(const std::vector<double>& intrinsincs_std);
@@ -104,6 +110,8 @@ namespace calibmar {
     std::vector<colmap::Camera> cameras_;
     std::vector<colmap::Camera> cameras_undistorted_;
     double calibration_rms_ = 0;
+    double projectionerr_before_ =0;
+    double projectionerr_ba_ =0; 
     std::string calibration_target_info_;
     // std deviations are only available if the calibrator supports it
     std::vector<cv::Mat> initalpose;
@@ -316,6 +324,25 @@ namespace calibmar {
   inline void Calibration::SetCalibrationRms(double rms) {
     calibration_rms_ = rms;
   }
+
+
+  inline double Calibration::Projectionerr_before() const {
+    return projectionerr_before_;
+  }
+
+  inline void Calibration::Setprojectionerr_before(double error) {
+    projectionerr_before_ = error;
+  }
+  
+  inline double Calibration::Projectionerr_ba() const {
+    return projectionerr_ba_;
+  }
+
+  inline void Calibration::Setprojectionerr_ba(double error) {
+    projectionerr_ba_ = error;
+  }
+
+
 
   inline std::vector<double>& Calibration::IntrinsicsStdDeviations() {
     return intrinsics_std_deviations_;

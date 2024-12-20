@@ -152,6 +152,8 @@ namespace calibmar {
         }
       stream << "G2O Solver: " << solvername << std::endl;
       stream << "camnum: "<< calibration.cam_num << std::endl;
+      stream << "Reprojection error before BA: "<< calibration.Projectionerr_before() << std::endl;
+      stream << "Reprojection error after BA: "<< calibration.Projectionerr_ba() << std::endl;
       // parameters
       for(int i=0;i<calibration.cam_num;i++)
       {
@@ -207,7 +209,7 @@ namespace calibmar {
       stream << "camnum: "<< calibration.cam_num << std::endl;
       stream << "# " << camera.ParamsInfo() << std::endl;
       // parameters
-      for (size_t i = 0; i < calibration.cam_num ; i++) {
+      for (size_t i = 0; i < calibrations.size(); i++) {
         const Calibration& calibration =*calibrations[i];
         const colmap::Camera& camera = calibration.Camera();
         stream << "parameters: [";
@@ -320,6 +322,8 @@ namespace calibmar {
       stream << "Width & Height:" << std::endl;
       stream << camera.width << " " << camera.height;
       stream << std::endl << std::endl;
+      stream << "Reprojection error before BA: "<< calibration.Projectionerr_before() << std::endl;
+      stream << "Reprojection error after BA: "<< calibration.Projectionerr_ba() << std::endl;
       // parameter values
       for(int i=0;i<calibration.cam_num;i++)
       {

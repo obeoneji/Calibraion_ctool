@@ -33,42 +33,42 @@ namespace{
 //     // 抛出异常
 //     throw std::runtime_error(oss.str());
 // }
-  void throwErrorWithVector(const std::vector<cv::Mat>& vec) {
-    // 构建异常信息
-    std::ostringstream oss;
-    oss << "Error: Vector values are:\n";
+  // void throwErrorWithVector(const std::vector<cv::Mat>& vec) {
+  //   // 构建异常信息
+  //   std::ostringstream oss;
+  //   oss << "Error: Vector values are:\n";
     
-    for (const cv::Mat& mat : vec) {
-        if (mat.rows == 3 && mat.cols == 1) {
-          oss << "[" << mat.at<double>(0, 0) << ", "
-              << mat.at<double>(1, 0) << ", "
-              << mat.at<double>(2, 0) << "] ";
-        } 
-        else if (mat.rows == 3 && mat.cols == 3) 
-        {
-          oss << "Matrix:\n";
-          for (int i = 0; i < 3; ++i) 
-          {
-            for (int j = 0; j < 3; ++j) 
-            {
-              if (mat.type() == CV_32F) {
-                oss << mat.at<float>(i, j) << (j < 2 ? ", " : ""); 
-              }
-              else{
-                oss << mat.at<double>(i, j) << (j < 2 ? ", " : ""); 
-              }
-            }
-            oss << "\n"; 
-          }
-        }
-        else {
-          oss << "[Invalid matrix size: " << mat.rows << "x" << mat.cols << "] ";
-        }
-    }
+  //   for (const cv::Mat& mat : vec) {
+  //       if (mat.rows == 3 && mat.cols == 1) {
+  //         oss << "[" << mat.at<double>(0, 0) << ", "
+  //             << mat.at<double>(1, 0) << ", "
+  //             << mat.at<double>(2, 0) << "] ";
+  //       } 
+  //       else if (mat.rows == 3 && mat.cols == 3) 
+  //       {
+  //         oss << "Matrix:\n";
+  //         for (int i = 0; i < 3; ++i) 
+  //         {
+  //           for (int j = 0; j < 3; ++j) 
+  //           {
+  //             if (mat.type() == CV_32F) {
+  //               oss << mat.at<float>(i, j) << (j < 2 ? ", " : ""); 
+  //             }
+  //             else{
+  //               oss << mat.at<double>(i, j) << (j < 2 ? ", " : ""); 
+  //             }
+  //           }
+  //           oss << "\n"; 
+  //         }
+  //       }
+  //       else {
+  //         oss << "[Invalid matrix size: " << mat.rows << "x" << mat.cols << "] ";
+  //       }
+  //   }
 
-    // 抛出异常
-    throw std::runtime_error(oss.str());
-  }
+  //   // 抛出异常
+  //   throw std::runtime_error(oss.str());
+  // }
   // void throwErrorWithVector(const cv::Mat& vec) {
   //   // 构建异常信息
   //   std::ostringstream oss;
@@ -120,21 +120,21 @@ namespace{
   //     // 抛出异常
   //     throw std::runtime_error(oss.str());
   // }
-  //   void throwErrorWithVector(Eigen::Vector3d & vec) {
-  //     // 构建异常信息
-  //     std::ostringstream oss;
-  //     oss << "Error: Vector values are:\n";
+    void throwErrorWithVector(Eigen::Vector3d & vec) {
+      // 构建异常信息
+      std::ostringstream oss;
+      oss << "Error: Vector values are:\n";
       
      
-  //     oss << "[" << vec.x() << ", " << vec.y() << ", " << vec.z() << "] ";
+      oss << "[" << vec.x() << ", " << vec.y() << ", " << vec.z() << "] ";
     
-  //     // for (const Eigen::Vector2d& value : vec) {
-  //     //     oss << "[ " << value.x() << " , " << value.y() << " ] ";
-  //     // }
+      // for (const Eigen::Vector2d& value : vec) {
+      //     oss << "[ " << value.x() << " , " << value.y() << " ] ";
+      // }
 
-  //     // 抛出异常
-  //     throw std::runtime_error(oss.str());
-  // }
+      // 抛出异常
+      throw std::runtime_error(oss.str());
+  }
   void reprojection_selection(double & mean_error,std::vector<Eigen::Vector3d>& keypoint3d_selected,std::vector<Eigen::Vector2d>& keypoint2dj_selected,Eigen::Matrix3d& Kj,cv::Mat& R_saved,cv::Mat& T_saved,cv::Mat& dist) 
   {
     cv::Mat Kj_;
@@ -167,6 +167,71 @@ namespace{
     return ;
   }
 
+
+
+  double Projection_err(std::vector<Eigen::Matrix3d> Cam_intrinsics,std::vector<cv::Mat> Cam_rotations,std::vector<cv::Mat> Cam_translations,std::vector<std::vector<int>>Cam_charucoidSets,std::vector<Eigen::Vector3d>point3d_dict,std::vector<int>point3d_dict_ids,std::vector<std::vector<Eigen::Vector2d>>&Cam_point2dSets,int &count_num)
+ {
+    double total_err = 0.0;
+
+    for (int i = 0; i < point3d_dict_ids.size(); i++)
+    {
+      int point_id = point3d_dict_ids[i];
+      Eigen::Vector3d point3d = point3d_dict[point_id];
+      int num_=0;
+      for (int j=0;j<Cam_charucoidSets.size();j++)
+      {
+          auto it = std::find(Cam_charucoidSets[j].begin(), Cam_charucoidSets[j].end(), point_id);
+          if(it!=Cam_charucoidSets[j].end())
+          {
+              num_++;
+          }
+      }
+      if(num_>1)
+      {
+        for (int j = 0; j < Cam_charucoidSets.size(); j++)
+        {
+          auto it = std::find(Cam_charucoidSets[j].begin(), Cam_charucoidSets[j].end(), point_id);
+          if (it != Cam_charucoidSets[j].end())
+          {
+            int index = std::distance(Cam_charucoidSets[j].begin(), it);
+            Eigen::Vector2d eigen_2d_point=Cam_point2dSets[j][index]; // 假设已经初始化
+
+
+            Eigen::Matrix3d K = Cam_intrinsics[j];
+            cv::Mat R = Cam_rotations[j];
+            cv::Mat T = Cam_translations[j];
+            Eigen::Matrix<double, 3, 3> R_eigen; // 旋转向量
+            Eigen::Matrix<double, 3, 1> T_eigen; // 平移向量
+            cv::cv2eigen(R, R_eigen);
+            cv::cv2eigen(T, T_eigen);
+            Eigen::Matrix<double, 4, 4> RT;
+            RT.setZero(); 
+            RT.block<3, 3>(0, 0) = R_eigen;
+            RT.block<3, 1>(0, 3) = T_eigen;
+            RT(3, 3) = 1.0; 
+
+            Eigen::Vector4d point3d_h(point3d(0), point3d(1), point3d(2), 1.0);
+            Eigen::Vector4d transformed_point = RT * point3d_h; 
+            Eigen::Vector3d transformed_point_K; 
+            transformed_point_K << transformed_point(0), transformed_point(1), transformed_point(2);
+            Eigen::Matrix<double, 3, 1> projection = K * transformed_point_K;
+            projection /= projection(2); // 归一化
+
+            double dx = projection(0) - eigen_2d_point(0);
+            double dy = projection(1) - eigen_2d_point(1);
+            double err = sqrt(dx * dx + dy * dy);
+            // throwErrorWithVector(projection);
+            // throw std::runtime_error("point_id:"+std::to_string(point_id));
+            // throw std::runtime_error("index:"+std::to_string(index)+','+std::to_string(projection(0))+','+std::to_string(projection(1))+','+std::to_string(eigen_2d_point(0))+','+std::to_string(eigen_2d_point(1)));
+            total_err += err;
+            count_num++;
+          }
+        }
+      }
+    }
+
+    return (count_num > 0) ? (total_err / count_num) : 0.0; // 返回平均误差
+  }
   std::vector<int> getIntersection(const std::vector<int>& vec1, const std::vector<int>& vec2)
   {
     std::unordered_set<int> set(vec1.begin(), vec1.end());
@@ -554,14 +619,22 @@ namespace calibmar
       }
       std::sort(point3d_dict_ids.begin(), point3d_dict_ids.end());
       calibration.SetInitalPose(Cam_rotations,Cam_translations);
+      int count_num=0;
+      int count_num_ba=0;
+      double projection_error=Projection_err(Cam_intrinsics,Cam_rotations,Cam_translations,Cam_charucoidSets,point3d_dict,point3d_dict_ids,Cam_point2dSets,count_num);
+      // throw std::runtime_error(std::to_string(projection_error)+','+std::to_string(count_num));
+      calibration.Setprojectionerr_before(projection_error);
+
+
       if(calibration.G2O_flag())
       {
         g2o_calibration::testG2o(calibration,options_.cam_num,options_.root_cam,Cam_point2dSets,Cam_point3dSets,Cam_charucoidSets,point3d_dict,point3d_dict_ids,Cam_rotations_afterba,Cam_translations_afterba,options_.solver_index);
         // throwErrorWithVector(Cam_translations_afterba);
         calibration.SetbaPose(Cam_rotations_afterba,Cam_translations_afterba);
       }
-
-
+      double projection_error_ba=Projection_err(Cam_intrinsics,Cam_rotations_afterba,Cam_translations_afterba,Cam_charucoidSets,point3d_dict,point3d_dict_ids,Cam_point2dSets,count_num_ba);
+      calibration.Setprojectionerr_ba(projection_error_ba);
+      // throw std::runtime_error(std::to_string(projection_error_ba)+','+std::to_string(count_num_ba));
     }
     else
     {

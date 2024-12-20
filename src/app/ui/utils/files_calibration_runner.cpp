@@ -57,6 +57,7 @@ namespace {
       HousingCalibrator::Options calibrator_options;
       calibrator_options.camera_model = options.camera_model;
       calibrator_options.image_size = image_size;
+      calibrator_options.current_cam_index =options.current_index ;
       calibrator_options.estimate_initial_dome_offset =
           (chessboard_options) && options.housing_calibration.value().first == HousingInterfaceType::DoubleLayerSphericalRefractive;
       calibrator_options.housing_interface = options.housing_calibration.value().first;
