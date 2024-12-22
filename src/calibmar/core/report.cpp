@@ -33,6 +33,9 @@ namespace {
           {
             stream <<"]," <<std::endl;
           }
+          else{
+            stream <<"]" ;
+          }
       }
       stream  <<']'<< std::endl;
   }
