@@ -53,6 +53,7 @@ namespace calibmar {
     // std::unique_ptr<Calibration> calibration_stereo_;
     std::atomic_bool calibration_success_;
     bool scrolled_to_bottom_;
+    bool is_system;
     // to persist dialog options between runs
     FileCalibrationDialog::Options file_calibration_options_;
     CalibrationSystemDialog::Options calibration_system_options_;

@@ -115,7 +115,7 @@ namespace calibmar {
     dialog.SetOptions(file_calibration_options_);
     dialog.resize(500,500);
     dialog.exec();
-
+    is_system=false;
     if (dialog.result() != QDialog::DialogCode::Accepted) {
       return;
     }
@@ -162,6 +162,7 @@ namespace calibmar {
     if (dialog.result() != QDialog::DialogCode::Accepted) {
       return;
     }
+    is_system=true;
     BeginNewCalibration(); 
     calibration_system_options_ = dialog.GetOptions();
     last_directory_ = calibration_system_options_.images_directory;
@@ -283,7 +284,7 @@ namespace calibmar {
     //   report::WriteCalibrationReport(report_file_stereo.string(), *calibration_stereo_);
     //   report::WriteCalibrationYaml(yaml_file_stereo.string(), *calibration_stereo_);
     // }
-    if(!calibration_)
+    if(!is_system)
     {
       report::WriteCalibrationReport(report_file.string(), calibrations_);
       report::WriteCalibrationYaml(yaml_file.string(), calibrations_);      
