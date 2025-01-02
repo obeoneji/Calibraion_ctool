@@ -151,6 +151,12 @@ namespace calibmar {
       painter->setPen(QPen(QBrush(QColor(line.RGB.x(), line.RGB.y(), line.RGB.z())), line.thickness));
       painter->drawLine(p1, p2);
     }
+    for (const auto& pt : refrac_points_) { // 假设 points_ 是存储点的 vector
+        Eigen::Vector2d transformed = (transformation_ * pt.point.homogeneous()).hnormalized();
+        painter->setPen(QPen(QBrush(QColor(255, 0, 0)), 3)); // 红色点，线宽 3
+        painter->drawPoint(transformed.x(), transformed.y());
+    }
+
 
     // handles
     Eigen::Vector2d transformed_start = (transformation_ * handle_start_.homogeneous()).hnormalized();
@@ -227,7 +233,7 @@ namespace calibmar {
     lines_.clear();
     polygons_.clear();
     circles_.clear();
-
+    refrac_points_.clear();
     Eigen::Vector2d interface_normal = (handle_end_ - handle_start_).normalized();
 
     Eigen::Vector3d line_left{1, 0, 0};
@@ -267,6 +273,9 @@ namespace calibmar {
     std::vector<Eigen::Vector2d> ray_dirs = ConstructCameraRays();
     const Eigen::Vector2d& camera_origin = camera_center_;
 
+    //sensor
+    Eigen::Vector3d sensor_line = ToHesse(std::get<1>(camera_pts_),std::get<2>(camera_pts_));
+
     // rays
     for (const auto& dir : ray_dirs) {
       Eigen::Vector3d ray_line = ToHesse(camera_origin, camera_origin + dir);
@@ -288,6 +297,8 @@ namespace calibmar {
       Eigen::Vector3d line_water = ToHesse(intersect_far, intersect_far + dir_water);
       lines_.push_back({intersect_far, Intersect(line_water, line_bottom)});
       lines_.push_back({intersect_far, Intersect(line_water, line_top), 1, {150, 150, 255}});
+      refrac_points_.push_back({Intersect(line_water, sensor_line),{255,0,0}});
+      
     }
 
     // axis
@@ -301,7 +312,7 @@ namespace calibmar {
     lines_.clear();
     polygons_.clear();
     circles_.clear();
-
+    refrac_points_.clear();
     Eigen::Vector2d dome_center = handle_start_;
     double dome_radius = (handle_end_ - handle_start_).norm();
     Eigen::Vector3d line_top{0, 1, 0};
@@ -324,7 +335,8 @@ namespace calibmar {
 
     std::vector<Eigen::Vector2d> ray_dirs = ConstructCameraRays();
     const Eigen::Vector2d& camera_origin = camera_center_;
-
+    //sensor
+    Eigen::Vector3d sensor_line = ToHesse(std::get<1>(camera_pts_),std::get<2>(camera_pts_));
     // rays
     for (const auto& dir : ray_dirs) {
       // Eigen::Vector3d ray_line = ToHesse(camera_origin, camera_origin + dir);
@@ -346,6 +358,7 @@ namespace calibmar {
       Eigen::Vector3d line_water = ToHesse(intersect_far, intersect_far + dir_water);
       lines_.push_back({intersect_far, Intersect(line_water, line_bottom)});
       lines_.push_back({intersect_far, Intersect(line_water, line_top), 1, {150, 150, 255}});
+      refrac_points_.push_back({Intersect(line_water, sensor_line),{255,0,0}});
     }
 
     // axis

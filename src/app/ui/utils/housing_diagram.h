@@ -52,7 +52,11 @@ namespace calibmar {
       double thickness;
       Eigen::Vector3i RGB;
     };
-
+    struct refracPoint
+    {
+      Eigen::Vector2d point;
+      Eigen::Vector3i RGB;
+    };
     std::vector<Eigen::Vector2d> ConstructCameraRays();
 
     Eigen::Vector2d Intersect(const Line& one, const Line& two);
@@ -70,6 +74,7 @@ namespace calibmar {
     std::vector<Line> lines_;
     std::vector<Polygon> polygons_;
     std::vector<PartialCircle> circles_;
+    std::vector<refracPoint> refrac_points_;
     std::tuple<Eigen::Vector2d, Eigen::Vector2d, Eigen::Vector2d> camera_pts_;
     int ray_count_;
     double fov_degrees_;
