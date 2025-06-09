@@ -172,7 +172,7 @@ namespace calibmar {
         cv::Ptr<cv::aruco::CharucoBoard> board = new cv::aruco::CharucoBoard(cv::Size(options_.columns ,options_.rows),
                                                 options_.square_size, options_.marker_size, dictionary,ids);
 
-        board->setLegacyPattern(true);
+        board->setLegacyPattern(false);
         // cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
         cv::Ptr<cv::aruco::DetectorParameters> params = cv::makePtr<cv::aruco::DetectorParameters>();
         // params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_NONE;
@@ -191,7 +191,7 @@ namespace calibmar {
           std::vector<cv::Point2f> charucoCorners; 
           std::vector<int> charucoIds; 
           cv::aruco::interpolateCornersCharuco(marker_corners, marker_ids, grayImage, board,  charucoCorners, charucoIds);
-          if (charucoCorners.size()>=8)
+          if (charucoCorners.size()>=options_.marker_num/2)
           { 
             int m=frame_index*options_.board_index+j;
             image.Setboardindex(m);

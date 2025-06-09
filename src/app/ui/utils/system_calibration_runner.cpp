@@ -167,15 +167,15 @@ namespace calibmar {
             if (extractor_status == FeatureExtractor::Status::SUCCESS) 
             { 
               
-              size_t id = calibration.AddImage_cam(image,i);
-              data->image_data = calibration.Image_cam(id,i);
+            size_t id = calibration.AddImage_cam(image,i);
+            data->image_data = calibration.Image_cam(id,i);
             }
-            else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
-              throw std::runtime_error("LACK_ERROR .");
-            }
-            else{
-              throw std::runtime_error("DETECTED ERROR .");
-            }
+            // else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
+            //   throw std::runtime_error("LACK_ERROR .");
+            // }
+            // else{
+            //   throw std::runtime_error("DETECTED ERROR .");
+            // }
 
 
             // save a copy of the last image for the offset visualization
