@@ -247,7 +247,7 @@ namespace calibmar {
                                 [calibration_widget = calibration_widget_]() { calibration_widget->StartCalibration(); });
       if(image_detected<=0)
       {
-        throw std::runtime_error("DETECTED ERROR .");
+        throw std::runtime_error("Need enough data to calibrate dome port offset.");
       }
       calibrator->Calibrate(calibration);
     }

@@ -83,7 +83,7 @@ namespace calibmar {
       cv::Ptr<cv::aruco::CharucoBoard> board = new cv::aruco::CharucoBoard(cv::Size(options_.columns ,options_.rows),
                                               options_.square_size, options_.marker_size, dictionary,ids);
 
-      board->setLegacyPattern(true);
+      board->setLegacyPattern(false);
       // cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
       cv::Ptr<cv::aruco::DetectorParameters> params = cv::makePtr<cv::aruco::DetectorParameters>();
       params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_NONE;
