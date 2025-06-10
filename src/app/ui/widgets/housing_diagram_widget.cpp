@@ -115,7 +115,7 @@ namespace calibmar {
     diagram_->InitHandle({handle_start_.center().x(), handle_start_.center().y()},
                          {handle_end_.center().x(), handle_end_.center().y()}, handle_radius_ * 2);
     diagram_->InitSize({width, height});
-    diagram_->InitInterfaceThickness(30);
+    diagram_->InitInterfaceThickness(10);
     diagram_->SetRayCount(8);
     diagram_->CalculatePoints();
     diagram_->GetCurrentHandles(&handle_start_, &handle_end_);

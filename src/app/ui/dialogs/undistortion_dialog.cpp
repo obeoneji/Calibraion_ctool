@@ -103,7 +103,7 @@ namespace calibmar {
       return;
     }
 
-    ImportedParameters p = ImportedParameters::ImportFromYaml(path);
+    ImportedParameters p = ImportedParameters::ImportFromYaml(path,false);
     camera_model_edit_->SetCameraModel(p.camera_model);
     camera_model_edit_->SetInitialCameraParameters(p.camera_parameters);//liheng3
   }

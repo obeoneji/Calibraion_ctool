@@ -22,7 +22,7 @@ namespace {
       case colmap::FullOpenCVCameraModel::model_id:
         return cv::CALIB_RATIONAL_MODEL;
       case colmap::OpenCVFisheyeCameraModel::model_id:
-        return cv::fisheye::CALIB_FIX_SKEW | cv::fisheye::CALIB_RECOMPUTE_EXTRINSIC |cv::fisheye::CALIB_CHECK_COND ;
+        return  cv::fisheye::CALIB_RECOMPUTE_EXTRINSIC;//cv::fisheye::CALIB_FIX_SKEW  | cv::fisheye::CALIB_RECOMPUTE_EXTRINSIC |cv::fisheye::CALIB_CHECK_COND 
       default:
         throw std::runtime_error("Bad CameraModel");
     }

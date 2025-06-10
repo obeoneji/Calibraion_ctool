@@ -23,7 +23,7 @@ namespace calibmar {
   HousingCalibrator::HousingCalibrator(const Options& options) : options_(options) {}
 
   void HousingCalibrator::Calibrate(Calibration& calibration) {
-    int camera_index=calibration.GetCamIndex();
+    int camera_index=options_.current_cam_index;
     options_.Check(camera_index);
 
     if (calibration.Images().size() == 0) {

@@ -167,15 +167,15 @@ namespace calibmar {
             if (extractor_status == FeatureExtractor::Status::SUCCESS) 
             { 
               
-              size_t id = calibration.AddImage_cam(image,i);
-              data->image_data = calibration.Image_cam(id,i);
+            size_t id = calibration.AddImage_cam(image,i);
+            data->image_data = calibration.Image_cam(id,i);
             }
-            else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
-              throw std::runtime_error("LACK_ERROR .");
-            }
-            else{
-              throw std::runtime_error("DETECTED ERROR .");
-            }
+            // else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
+            //   throw std::runtime_error("LACK_ERROR .");
+            // }
+            // else{
+            //   throw std::runtime_error("DETECTED ERROR .");
+            // }
 
 
             // save a copy of the last image for the offset visualization
@@ -256,6 +256,7 @@ namespace calibmar {
     // do extraction again, for extrinsic calibration
     for(int i=0;i<cam_count;i++)
         {
+          int image_detected=0;
           FilesystemImageReader::Options reader_options;
           reader_options.image_directory = options_.output_images_directory;
           reader_options.cam_index = i;//liheng1
@@ -278,6 +279,7 @@ namespace calibmar {
                   
                   size_t id = calibration.AddImage_cam_undistorted(image,i);
                   data->image_data = calibration.Image_cam_undistorted(id,i);
+                  image_detected+=1;
                 }
                 // else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
                 //   throw std::runtime_error("Undistorted Image:LACK_ERROR .");
@@ -299,6 +301,10 @@ namespace calibmar {
               {
                 data->status = ExtractionImageWidget::ConvertStatus(reader_status);
               }
+            }
+            if(image_detected<1)
+            {
+              throw std::runtime_error("Undistorted Image:DETECTED ERROR .");
             }
           }
           catch (std::exception& ex) {

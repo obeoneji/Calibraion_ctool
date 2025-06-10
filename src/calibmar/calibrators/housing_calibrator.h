@@ -27,7 +27,7 @@ namespace calibmar {
       std::pair<int, int> pattern_cols_rows = {0, 0};
       // Image size in pixel (width, height).
       std::pair<int, int> image_size = {0, 0};
-
+      int current_cam_index=0;
       void Check(int cam_index);
     };
 

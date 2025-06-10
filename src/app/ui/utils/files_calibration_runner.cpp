@@ -57,6 +57,7 @@ namespace {
       HousingCalibrator::Options calibrator_options;
       calibrator_options.camera_model = options.camera_model;
       calibrator_options.image_size = image_size;
+      calibrator_options.current_cam_index =options.current_index ;
       calibrator_options.estimate_initial_dome_offset =
           (chessboard_options) && options.housing_calibration.value().first == HousingInterfaceType::DoubleLayerSphericalRefractive;
       calibrator_options.housing_interface = options.housing_calibration.value().first;
@@ -194,7 +195,7 @@ namespace calibmar {
     }
 
     calibration_widget_->SetTargetVisualizer(std::move(target_visualizer));
-
+    int image_detected=0;
     try {
       while (reader.HasNext()) {
         Image image;
@@ -210,14 +211,17 @@ namespace calibmar {
           if (extractor_status == FeatureExtractor::Status::SUCCESS) {
             size_t id = calibration.AddImage(image);
             data->image_data = calibration.Image(id);
+            image_detected+=1;
           }
-          else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
-            throw std::runtime_error("LACK_ERROR .");
-          }
+          // else if(extractor_status == FeatureExtractor::Status::LACK_ERROR)  {
+          //   throw std::runtime_error("LACK_ERROR .");
+          // }
+          // else{
+          //   throw std::runtime_error("DETECTED ERROR .");
+          // }
           else{
-            throw std::runtime_error("DETECTED ERROR .");
+            continue;
           }
-
           // save a copy of the last image for the offset visualization
           last_pixmap_ = std::make_unique<Pixmap>(pixmap->Clone());
           data->image = std::move(pixmap);
@@ -241,7 +245,10 @@ namespace calibmar {
 
       QMetaObject::invokeMethod(calibration_widget_,
                                 [calibration_widget = calibration_widget_]() { calibration_widget->StartCalibration(); });
-
+      if(image_detected<=0)
+      {
+        throw std::runtime_error("Need enough data to calibrate dome port offset.");
+      }
       calibrator->Calibrate(calibration);
     }
     catch (std::exception& ex) {

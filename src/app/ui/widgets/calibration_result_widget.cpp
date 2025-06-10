@@ -63,7 +63,7 @@ td {
     stream << "</table>" << std::endl;
   }
   void FormatTableRows(std::ostream& stream, const std::vector<std::string>& first_col, const std::vector<std::string>& first_row,
-                       const std::vector<double>& second_row, const std::vector<double>& third_row) {
+                       const std::vector<double>& second_row, const std::vector<double>& third_row,bool system) {
     stream << "<table>\n<tbody>\n<tr>"
            << "<td><b>" << first_col[0] << ":</b></td>\n";
     for (auto& value : first_row) {
@@ -77,13 +77,17 @@ td {
     }
     stream << "</tr>\n";
     // parameter std dev
-    if (third_row.size() > 0) {
-      stream << "<tr>\n<td><b>" << first_col[2] << "</b></td>";
-      for (auto& value : third_row) {
-        stream << "<td>" << value << "</td>\n";
+    if(!system)
+    {
+      if (third_row.size() > 0) {
+        stream << "<tr>\n<td><b>" << first_col[2] << "</b></td>";
+        for (auto& value : third_row) {
+          stream << "<td>" << value << "</td>\n";
+        }
+        stream << "</tr>";
       }
-      stream << "</tr>";
     }
+
 
     stream << "\n</tbody>\n</table>\n";
   }
@@ -106,6 +110,10 @@ td {
       stream << "<h3>Width &amp; Height:</h3>" << std::endl;
       stream << "<p>" << camera.width << " " << camera.height << "</p>";
       stream << std::endl << std::endl;
+
+      stream << "<h3>Reprojection error before BA &amp; Reprojection error after BA:</h3>" << std::endl;
+      stream << "<p>" << calibration.Projectionerr_before() << " " << calibration.Projectionerr_ba() << "</p>";
+      stream << std::endl << std::endl;
       if(calibration.G2O_flag())
       { 
         std::string g2o_solver_name;    
@@ -120,11 +128,12 @@ td {
                 break;
             case 2:
                 // 处理未知索引的情况
-                solverName = "Dense";
+                g2o_solver_name = "Dense";
                 break;
         }
-          stream << "<p>" << "<h3>G2O solver:</h3>" << std::endl
-          << g2o_solver_name<< std::endl<< std::endl;
+        stream << "<p>" << "<h3>G2O solver:</h3>" << std::endl
+        << g2o_solver_name;
+        stream << std::endl << std::endl;
       }
       for(int i=0;i<calibration.cam_num;i++)
       {
@@ -137,10 +146,10 @@ td {
         // parameter lables
         std::vector<std::string> param_names = Split(camera.ParamsInfo(), ", ");
         FormatTableRows(stream, {"Parameters", "Values", "Est. Std. Deviations:"}, param_names, camera.params,
-                        calibration.IntrinsicsStdDeviations());
+                        calibration.IntrinsicsStdDeviations(),true);
         std::vector<std::string> param_names_undistorted = Split(camera_undistorted.ParamsInfo()+ ", k3", ", ");
         FormatTableRows(stream, {"Parameters", "Values", "Est. Std. Deviations:"}, param_names_undistorted, camera_undistorted.params,
-                        calibration.IntrinsicsStdDeviations());
+                        calibration.IntrinsicsStdDeviations(),true);
 
         if(calibration.G2O_flag())
         {        
@@ -153,9 +162,9 @@ td {
           const std::string  cam_string_before="Camera "+std::to_string(i);
           FormatMatrixToHtml(stream, calibration.InitalPose(i),cam_string_before);
         }
-        // overall rms
-        stream << std::endl << "<h3>Overall RMS:</h3>\n<p>" << calibration.CalibrationRms() << "</p>\n";   
       }
+      // overall rms
+      stream << std::endl << "<h3>Overall RMS:</h3>\n<p>" << calibration.CalibrationRms() << "</p>\n";   
 
       // // optional stereo pose
       // if (calibration.CameraToWorldStereo().has_value()) {
@@ -191,14 +200,14 @@ td {
       // parameter lables
       std::vector<std::string> param_names = Split(camera.ParamsInfo(), ", ");
       FormatTableRows(stream, {"Parameters", "Values", "Est. Std. Deviations:"}, param_names, camera.params,
-                      calibration.IntrinsicsStdDeviations());
+                      calibration.IntrinsicsStdDeviations(),false);
 
       // optional refractive
       if (camera.IsCameraRefractive()) {
         std::vector<std::string> housing_param_names = Split(camera.RefracParamsInfo(), ", ");
         FormatTableRows(stream, {"Housing Parameters", "Values", "Est. Std. Deviations:"},
                         Split(Split(camera.RefracParamsInfo(), "\n")[0], ", "), camera.refrac_params,
-                        calibration.HousingParamsStdDeviations());
+                        calibration.HousingParamsStdDeviations(),false);
       }
       // optional stereo pose
       if (calibration.CameraToWorldStereo().has_value()) {

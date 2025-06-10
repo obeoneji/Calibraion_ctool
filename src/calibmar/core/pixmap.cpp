@@ -53,9 +53,17 @@ namespace calibmar {
     if (image.data == NULL) {
       return false;
     }
-
+    if(image.channels() == 1)
+    {
+      cv::Mat demosaicedimage;
+      cv::cvtColor(image,demosaicedimage,cv::COLOR_BayerRG2BGR);
+      data_=demosaicedimage;
+    }
     // Mat behaves as a smart pointer.
-    data_ = image;
+    else{
+      data_ = image;
+    }
+    // data_ = image;
 
     return true;
   }

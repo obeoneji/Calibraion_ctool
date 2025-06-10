@@ -92,7 +92,7 @@ namespace calibmar {
       return;
     }
 
-    ImportedParameters p = ImportedParameters::ImportFromYaml(path);
+    ImportedParameters p = ImportedParameters::ImportFromYaml(path,true);
     Options options;
     switch (p.calibration_target) {
       case CalibrationTargetType::Chessboard:
@@ -121,6 +121,7 @@ namespace calibmar {
                                                                                  p.marker_num,
                                                                                  p.square_size,
                                                                                  p.marker_size,
+                                                                                 p.frame_num
                                                                                  };
 
         break;

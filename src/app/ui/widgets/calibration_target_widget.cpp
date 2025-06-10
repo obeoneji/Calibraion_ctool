@@ -10,22 +10,23 @@ namespace calibmar {
     QLabel* target_type_label = new QLabel(this);
     target_type_label->setText("Calibration Target Type");
     target_type_combobox_ = new QComboBox(this);
-    target_type_combobox_->addItem("Chessboard");
     target_type_combobox_->addItem("Charuco board");
-    target_type_combobox_->addItem("Aruco Grid Board");
     if(!is_system_calibration){
+      target_type_combobox_->addItem("Chessboard");
+      target_type_combobox_->addItem("Aruco Grid Board");
       target_type_combobox_->addItem("3D Target");
     }
 
     target_type_combobox_->setCurrentIndex(0);
-
-    chessboard_target_widget_ = new ChessboardTargetOptionsWidget(this);
-    chessboard_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
     charuco_board_target_widget_ = new CharucoBoardTargetOptionsWidget(this,is_system_calibration);
     charuco_board_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
-    aruco_board_target_widget_ = new ArucoBoardTargetOptionsWidget(this); 
-    aruco_board_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
     if(!is_system_calibration){
+
+      
+      chessboard_target_widget_ = new ChessboardTargetOptionsWidget(this);
+      chessboard_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
+      aruco_board_target_widget_ = new ArucoBoardTargetOptionsWidget(this); 
+      aruco_board_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
       target3D_target_widget_ = new Target3DTargetOptionsWidget(this);
       target3D_target_widget_->layout()->setContentsMargins(0, 0, 0, 0);
 
@@ -42,17 +43,18 @@ namespace calibmar {
     // main layout
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addLayout(formLayout_target_type);
-    layout->addWidget(chessboard_target_widget_);
+
     layout->addWidget(charuco_board_target_widget_);
-    layout->addWidget(aruco_board_target_widget_);
     if(!is_system_calibration){
-      layout->addWidget(target3D_target_widget_);
+      layout->addWidget(chessboard_target_widget_);
+      layout->addWidget(aruco_board_target_widget_);
+      layout->addWidget(target3D_target_widget_);    
     }
     if(!is_system_calibration){
-      widgets={chessboard_target_widget_, charuco_board_target_widget_,aruco_board_target_widget_, target3D_target_widget_};      
+      widgets={charuco_board_target_widget_,chessboard_target_widget_, aruco_board_target_widget_, target3D_target_widget_};      
     }
     else{
-      widgets={chessboard_target_widget_,charuco_board_target_widget_,aruco_board_target_widget_};
+      widgets={charuco_board_target_widget_};
     }
 
     target_type_combobox_->setCurrentIndex(0);
@@ -61,12 +63,12 @@ namespace calibmar {
 
   void CalibrationTargetOptionsWidget::SetCalibrationTargetOptions(const CalibrationTargetOptionsWidget::Options& options) {
     if (std::holds_alternative<ChessboardFeatureExtractor::Options>(options)) {
-      target_type_combobox_->setCurrentIndex(0);
+      target_type_combobox_->setCurrentIndex(1);
       chessboard_target_widget_->SetChessBoardTargetOptions(std::get<ChessboardFeatureExtractor::Options>(options));
     }
 
     else if (std::holds_alternative<CharucoBoardFeatureExtractor::Options>(options)){
-      target_type_combobox_->setCurrentIndex(1);
+      target_type_combobox_->setCurrentIndex(0);
       charuco_board_target_widget_->SetCharucoBoardTargetOptions(std::get<CharucoBoardFeatureExtractor::Options>(options));
     }
     else if (std::holds_alternative<ArucoBoardFeatureExtractor::Options>(options)) {
@@ -86,10 +88,10 @@ namespace calibmar {
 
   CalibrationTargetOptionsWidget::Options CalibrationTargetOptionsWidget::CalibrationTargetOptions() {
     Options options;
-    if (target_type_combobox_->currentIndex() == 0) {
+    if (target_type_combobox_->currentIndex() == 1) {
       options = chessboard_target_widget_->ChessboardTargetOptions();
     }
-    else if (target_type_combobox_->currentIndex() ==1)
+    else if (target_type_combobox_->currentIndex() ==0)
     {
       options = charuco_board_target_widget_->CharucoBoardTargetOptions();
     }

@@ -32,15 +32,16 @@ namespace calibmar {
     QLabel* board_index_label = new QLabel(this);
     if(is_system_calibration)
     {
-    board_index_label->setText("num of board");
+    board_index_label->setText("num of board(total)");
     }
     else{
-    board_index_label->setText("index of board");      
+    board_index_label->setText("index of board(order,start from 0)");      
     }
 
     board_index_edit_ = new QSpinBox(this);
     board_index_edit_->setRange(0, 25);
     board_index_edit_->setSingleStep(1);
+    board_index_edit_->setValue(1);
 
     QLabel* frame_num_label = new QLabel(this);
     frame_num_label->setText("Number of frame per camera");
@@ -53,17 +54,17 @@ namespace calibmar {
     QLabel* marker_size_label = new QLabel(this);
     marker_size_label->setText("Marker Size");
     marker_size_edit_ = new QDoubleSpinBox(this);
-    marker_size_edit_->setDecimals(3);
-    marker_size_edit_->setRange(0.001, 1000);
-    marker_size_edit_->setSingleStep(0.001);
+    marker_size_edit_->setDecimals(4);
+    marker_size_edit_->setRange(0.0001, 1000);
+    marker_size_edit_->setSingleStep(0.0001);
     marker_size_edit_->setValue(1.0);
 
     QLabel* square_size_label = new QLabel(this);
     square_size_label->setText("Square Size");
     square_size_edit_ = new QDoubleSpinBox(this);
-    square_size_edit_->setDecimals(3);
-    square_size_edit_->setRange(0.001, 1000);
-    square_size_edit_->setSingleStep(0.001);
+    square_size_edit_->setDecimals(4);
+    square_size_edit_->setRange(0.0001, 1000);
+    square_size_edit_->setSingleStep(0.0001);
     square_size_edit_->setValue(1.0);
 
     QFormLayout* formLayout = new QFormLayout(this);
@@ -83,6 +84,8 @@ namespace calibmar {
     formLayout->setWidget(7, QFormLayout::FieldRole, board_index_edit_);
     formLayout->setWidget(8, QFormLayout::LabelRole, frame_num_label);
     formLayout->setWidget(8, QFormLayout::FieldRole, frame_num_edit_);
+
+
 
 
 

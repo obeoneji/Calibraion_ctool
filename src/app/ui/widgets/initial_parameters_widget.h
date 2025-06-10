@@ -20,6 +20,7 @@ namespace calibmar {
   private:
     // std::optional<int> conut=1;
     QSpinBox* camNumSpinBox;
+    QLabel*  camNumLabel_;
     QVBoxLayout* layout_main;
     QLineEdit* parameters_edit_;
     QCheckBox* parameters_checkbox_;

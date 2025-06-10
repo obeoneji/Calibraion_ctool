@@ -2,7 +2,7 @@
 
 namespace calibmar {
 
-  CameraSystemInitalWidget::CameraSystemInitalWidget(QWidget* parent) : QWidget(parent),layout(new QVBoxLayout(this)),formLayout_target_type(new QFormLayout(this)),camNumSpinBox(new QSpinBox(this)),rootCamSpinBox(new QSpinBox(this)),camNumLabel(new QLabel("Camera Num:", this)),rootCamLabel(new QLabel("Root Cam:", this)){
+  CameraSystemInitalWidget::CameraSystemInitalWidget(QWidget* parent) : QWidget(parent),layout(new QVBoxLayout(this)),formLayout_target_type(new QFormLayout(this)),camNumSpinBox(new QSpinBox(this)),rootCamSpinBox(new QSpinBox(this)),camNumLabel(new QLabel("Camera Num:", this)),rootCamLabel(new QLabel("Root Cam:(start from 1)", this)){
     // QLabel* camNumLabel = new QLabel(this);
     // QLabel* rootCamLabel = new QLabel(this);
     // camNumLabel->setText("Camera Num:");
@@ -11,7 +11,8 @@ namespace calibmar {
     // QSpinBox*  camNumSpinBox = new QSpinBox(this);
     camNumSpinBox->setRange(0, 10); // 设置范围
     camNumSpinBox->setValue(1); // 初始值
-    camNumSpinBox->setFixedSize(20, 20);
+    camNumSpinBox->setSingleStep(1);
+    // camNumSpinBox->setFixedSize(20, 20);
 
     // QSpinBox* rootCamSpinBox = new QSpinBox(this);
     rootCamSpinBox->setRange(0, 10);

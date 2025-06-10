@@ -9,7 +9,7 @@
 #include "calibmar/readers/livestream_reader.h"
 #include "calibmar/version.h"
 #include "ui/dialogs/housing_diagram_dialog.h"
-#include "ui/dialogs/license_dialog.h"
+// #include "ui/dialogs/license_dialog.h"
 #include "ui/dialogs/model_explorer_dialog.h"
 #include "ui/dialogs/stereo_file_calibration_dialog.h"
 #include "ui/dialogs/stream_calibration_dialog.h"
@@ -115,7 +115,7 @@ namespace calibmar {
     dialog.SetOptions(file_calibration_options_);
     dialog.resize(500,500);
     dialog.exec();
-
+    is_system=false;
     if (dialog.result() != QDialog::DialogCode::Accepted) {
       return;
     }
@@ -162,6 +162,7 @@ namespace calibmar {
     if (dialog.result() != QDialog::DialogCode::Accepted) {
       return;
     }
+    is_system=true;
     BeginNewCalibration(); 
     calibration_system_options_ = dialog.GetOptions();
     last_directory_ = calibration_system_options_.images_directory;
@@ -283,7 +284,7 @@ namespace calibmar {
     //   report::WriteCalibrationReport(report_file_stereo.string(), *calibration_stereo_);
     //   report::WriteCalibrationYaml(yaml_file_stereo.string(), *calibration_stereo_);
     // }
-    if(!calibration_)
+    if(!is_system)
     {
       report::WriteCalibrationReport(report_file.string(), calibrations_);
       report::WriteCalibrationYaml(yaml_file.string(), calibrations_);      
@@ -300,7 +301,7 @@ namespace calibmar {
     QMessageBox::about(this, "About Calibmar",
                        QString::fromStdString("<h2>Calibmar " + CALIBMAR_VERSION + "</h2>\n<p>Commit ID: " + CALIBMAR_COMMIT_ID +
                                               ", Commit date: " + CALIBMAR_COMMIT_DATE + ", " + CALIBMAR_CUDA_ENABLED +
-                                              "</p>\n<p><strong>Author:</strong> Felix Seegräber</p>"));
+                                              "</p>\n<p><strong>Author:</strong> Li Heng</p>\n</p>This software is intended for academic research purposes only. "));
   }
 
   void MainWindow::CreateActions() {
@@ -339,11 +340,11 @@ namespace calibmar {
     });
 
     QMenu* helpMenu = menuBar()->addMenu("&Help");
-    helpMenu->addAction("&Licenses", this, []() {
-      LicenseDialog dialog;
-      dialog.resize(500, 500);
-      dialog.exec();
-    });
+    // helpMenu->addAction("&Licenses", this, []() {
+    //   LicenseDialog dialog;
+    //   dialog.resize(500, 500);
+    //   dialog.exec();
+    // });
     helpMenu->addAction("&About", this, &MainWindow::About);
   }
 

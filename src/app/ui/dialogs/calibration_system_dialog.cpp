@@ -147,7 +147,7 @@ namespace calibmar {
       return;
     }
 
-    ImportedParameters p = ImportedParameters::ImportFromYaml(path);
+    ImportedParameters p = ImportedParameters::ImportFromYaml(path,false);
     Options options;
     switch (p.calibration_target) {
       case CalibrationTargetType::Chessboard:
