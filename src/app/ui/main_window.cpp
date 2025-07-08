@@ -123,7 +123,7 @@ namespace calibmar {
     BeginNewCalibration(); 
     file_calibration_options_ = dialog.GetOptions();
     last_directory_ = file_calibration_options_.images_directory;
-
+    calibrations_.clear();
     // cam_num=file_calibration_options_.cam_num;
     for (int i=0;i<file_calibration_options_.cam_num;i++)
     {

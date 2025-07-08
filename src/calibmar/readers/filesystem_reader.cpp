@@ -18,7 +18,7 @@ namespace calibmar {
       if (dir_entry.is_regular_file()) 
       {
         std::ostringstream oss;
-        oss << std::setw(3) << std::setfill('0') << options_.cam_index << ".png";
+        oss << std::setw(3) << std::setfill('0') << options_.cam_index << ".jpg";
         std::string target_filename = oss.str();
         std::string filename = dir_entry.path().filename().string();
         if (filename.substr(filename.size() - target_filename.size()) == target_filename) {

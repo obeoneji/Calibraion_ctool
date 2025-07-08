@@ -265,6 +265,7 @@ namespace calibmar {
             while (reader.HasNext()) {
               Image image;
               image.issystem();
+              image.is_undistort();
               std::unique_ptr<Pixmap> pixmap = std::make_unique<Pixmap>();
               ImageReader::Status reader_status = reader.Next(image, *pixmap);
               FeatureExtractor::Status extractor_status;

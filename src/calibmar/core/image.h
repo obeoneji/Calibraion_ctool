@@ -65,6 +65,8 @@ namespace calibmar {
     inline const std::map<int, std::vector<Eigen::Vector2d>>& ArucoKeypoints() const;
     inline void issystem();
     inline bool System() const;
+    inline void is_undistort();
+    inline bool undistorted() const;
     colmap::FeatureDescriptors feature_descriptors_;
     colmap::FeatureKeypoints feature_keypoints_;
     // this is a ordered map so the position of detected corners is stable regarding their position in the overall map
@@ -82,6 +84,7 @@ namespace calibmar {
     std::vector<std::unordered_map<size_t, uint32_t>> correspondences_board;
     colmap::Rigid3d pose_;
     bool system=false;
+    bool distorted_flag=false;
   };
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +109,14 @@ namespace calibmar {
   inline bool Image::System()const {
     return system;
   }
+
+  inline void Image::is_undistort() {
+    distorted_flag=true;
+  }
+  inline bool Image::undistorted()const {
+    return distorted_flag;
+  }
+
 
   inline void Image::SetPoints2D(const std::vector<Eigen::Vector2d>& points) {
     points2D_ = points;

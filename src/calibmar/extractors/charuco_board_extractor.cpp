@@ -101,7 +101,7 @@ namespace calibmar {
         std::vector<cv::Point2f> charucoCorners; 
         std::vector<int> charucoIds; 
         cv::aruco::interpolateCornersCharuco(marker_corners, marker_ids, grayImage, board,  charucoCorners, charucoIds);
-        if (charucoCorners.size()<8) {
+        if (charucoCorners.size()<(options_.columns-1)*(options_.rows-1)) {
           return Status::LACK_ERROR;
         }
 
@@ -148,6 +148,7 @@ namespace calibmar {
       cv::Mat grayImage;
       cv::cvtColor(image_data, grayImage, cv::COLOR_BGR2GRAY);
       int board_count=0;
+      int thresh;
       image.ClearCorrespondences_withboard();
       for (int j=0; j<options_.board_index; j++)
       {   
@@ -191,7 +192,14 @@ namespace calibmar {
           std::vector<cv::Point2f> charucoCorners; 
           std::vector<int> charucoIds; 
           cv::aruco::interpolateCornersCharuco(marker_corners, marker_ids, grayImage, board,  charucoCorners, charucoIds);
-          if (charucoCorners.size()>=options_.marker_num/2)
+          if(!image.undistorted())
+            {
+              thresh=(options_.columns-1)*(options_.rows-1)/2;  
+            }
+          else{
+              thresh=(options_.columns-1)*(options_.rows-1)/2;  
+            }
+          if (charucoCorners.size()>=thresh)
           { 
             int m=frame_index*options_.board_index+j;
             image.Setboardindex(m);
