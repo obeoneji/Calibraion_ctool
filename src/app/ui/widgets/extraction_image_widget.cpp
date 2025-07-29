@@ -65,12 +65,12 @@ namespace {
     target_visualizer.DrawTargetOnImage(pixmap, data.image_data);  
 
 
-    // std::filesystem::path file_name(data.image_name);
-    // file_name = file_name.stem() += file_name.extension();
-    // std::filesystem::path output_dir = "C:/Users/Mayn/work/calibration/LED/sfm1/archive/test_for_final_result/real1/1/draw";
-    // std::filesystem::create_directories(output_dir);  // 需要#include <filesystem>
-    // std::filesystem::path output_file = output_dir/ file_name;
-    // pixmap.Write(output_file.string());
+    std::filesystem::path file_name(data.image_name);
+    file_name = file_name.stem() += file_name.extension();
+    std::filesystem::path output_dir = "C:/Users/Mayn/work/calibration/LED/sfm1/archive/test_for_final_result/real1/1/draw";
+    std::filesystem::create_directories(output_dir);  // 需要#include <filesystem>
+    std::filesystem::path output_file = output_dir/ file_name;
+    pixmap.Write(output_file.string());
 
     std::unique_ptr<calibmar::Pixmap> scaled = std::make_unique<calibmar::Pixmap>();
     double f = (double)widget_width / pixmap.Width();

@@ -148,6 +148,7 @@ namespace calibmar {
     {
       FilesystemImageReader::Options reader_options;
       reader_options.image_directory = options_.images_directory;
+      reader_options.image_read_mode = Pixmap::ReadMode::COLOR_AS_SOURCE;
       // reader_options.cam_index = 0;//liheng1
       reader_options.cam_index = i;//liheng1
       FilesystemImageReader reader(reader_options);    

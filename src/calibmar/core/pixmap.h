@@ -27,7 +27,7 @@ namespace calibmar {
     Pixmap Clone();
 
     // Read from file
-    bool Read(const std::string& path, const ReadMode mode = ReadMode::COLOR);
+    bool Read(const std::string& path, const ReadMode mode = ReadMode::COLOR_AS_SOURCE);
     // Write to file
     bool Write(const std::string& path);
     // Assign existing cv::Mat. Uses the cv::Mat(cv::Mat) constructor, that does not copy the data.

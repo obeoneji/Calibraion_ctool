@@ -283,7 +283,7 @@ namespace calibmar {
       solver_options.gradient_tolerance = 1e-20;
       solver_options.function_tolerance = 1e-20;
       solver_options.max_num_iterations = 50000;
-      solver_options.linear_solver_type = ceres::SPARSE_SCHUR;//SPARSE_SCHUR DENSE_QR 
+      solver_options.linear_solver_type = ceres::DENSE_QR;//SPARSE_SCHUR DENSE_QR 
       solver_options.minimizer_progress_to_stdout = false;
       solver_options.num_threads = std::thread::hardware_concurrency();
 
