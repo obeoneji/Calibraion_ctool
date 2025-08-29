@@ -317,7 +317,16 @@ namespace{
         }
       }
     }
-    throw std::runtime_error("Can not find detected board in cam i and j.");
+    std::stringstream error_msg;
+    error_msg << "无法在以下相机之间找到连接: ";
+    for (int i = 0; i < saved.size(); i++) {
+        error_msg << "相机" << saved[i] << " 与 {";
+        for (int j = 0; j < not_saved.size(); j++) {
+            error_msg << "相机" << not_saved[j] << ", ";
+        }
+      error_msg << "} 中的任何相机\n";
+    }
+    throw std::runtime_error(error_msg.str());
   }
   void add_3dpoints(int cam_index,std::vector<Eigen::Vector3d>& point3d_dict,std::vector<int>&point3d_dict_ids,std::vector<std::vector<Eigen::Vector2d>> Cam_point2dSets,std::vector<bool>& point3d_dict_mask, std::vector<std::vector<int>> Cam_boardindexSets,std::vector<std::vector<int>> Cam_charucoidSets,std::vector<cv::Mat>Cam_rotations,
   std::vector<cv::Mat> Cam_translations, std::vector<Eigen::Matrix3d>Cam_intrinsics, std::vector<std::vector<cv::Mat>> Board_rotations, std::vector<std::vector<cv::Mat>>Board_translations,int pattern)

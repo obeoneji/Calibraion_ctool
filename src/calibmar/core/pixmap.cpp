@@ -56,12 +56,12 @@ namespace calibmar {
     if(image.channels() == 1)
     {
       cv::Mat demosaicedimage;
-      cv::cvtColor(image,demosaicedimage,cv::COLOR_BayerRG2BGR);
-      data_=demosaicedimage;
+      cv::cvtColor(image,demosaicedimage,cv::COLOR_BayerRG2RGB);
+      data_=demosaicedimage.clone();
     }
     // Mat behaves as a smart pointer.
     else{
-      data_ = image;
+      data_ = image.clone();
     }
     // data_ = image;
 

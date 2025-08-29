@@ -86,7 +86,8 @@ namespace calibmar {
       board->setLegacyPattern(false);
       // cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
       cv::Ptr<cv::aruco::DetectorParameters> params = cv::makePtr<cv::aruco::DetectorParameters>();
-      params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_NONE;
+      params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_SUBPIX;
+      //CORNER_REFINE_NONE
       // params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_APRILTAG;
 
       // cv::aruco::ArucoDetector detector(dictionary, *params);
@@ -101,7 +102,7 @@ namespace calibmar {
         std::vector<cv::Point2f> charucoCorners; 
         std::vector<int> charucoIds; 
         cv::aruco::interpolateCornersCharuco(marker_corners, marker_ids, grayImage, board,  charucoCorners, charucoIds);
-        if (charucoCorners.size()<8) {
+        if (charucoCorners.size()<(options_.columns-1)*(options_.rows-1)) {
           return Status::LACK_ERROR;
         }
 
@@ -148,13 +149,14 @@ namespace calibmar {
       cv::Mat grayImage;
       cv::cvtColor(image_data, grayImage, cv::COLOR_BGR2GRAY);
       int board_count=0;
+      int thresh;
       image.ClearCorrespondences_withboard();
       for (int j=0; j<options_.board_index; j++)
       {   
         std::vector<int> marker_ids;
         std::vector<std::vector<cv::Point2f>> marker_corners, rejected_candidates;
         std::string name=image.Name();
-        std::regex pattern(R"(frame(\d{6})_cam)");
+        std::regex pattern(R"((\d{4})_cam)");
         std::smatch match;
         int frame_index;
         // 使用正则表达式进行匹配
@@ -176,7 +178,7 @@ namespace calibmar {
         // cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(5, 7, 0.04, 0.02, dictionary);
         cv::Ptr<cv::aruco::DetectorParameters> params = cv::makePtr<cv::aruco::DetectorParameters>();
         // params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_NONE;
-        // params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_APRILTAG;
+        params->cornerRefinementMethod = cv::aruco::CORNER_REFINE_SUBPIX;
 
         // cv::aruco::ArucoDetector detector(dictionary, *params);
         // detector.detectMarkers(image_data,marker_corners,marker_ids,rejected_candidates);
@@ -191,7 +193,22 @@ namespace calibmar {
           std::vector<cv::Point2f> charucoCorners; 
           std::vector<int> charucoIds; 
           cv::aruco::interpolateCornersCharuco(marker_corners, marker_ids, grayImage, board,  charucoCorners, charucoIds);
-          if (charucoCorners.size()>=options_.marker_num/2)
+          // cv::TermCriteria criteria(
+          //         cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER,
+          //         30, 
+          //         0.001  
+          //     );
+          // cv::cornerSubPix(grayImage,charucoCorners,cv::Size(5, 5),cv::Size(-1, -1), criteria);
+
+
+          if(!image.undistorted())
+            {
+              thresh=(options_.columns-1)*(options_.rows-1)/2;  
+            }
+          else{
+              thresh=(options_.columns-1)*(options_.rows-1)/2;  
+            }
+          if (charucoCorners.size()>=thresh)
           { 
             int m=frame_index*options_.board_index+j;
             image.Setboardindex(m);

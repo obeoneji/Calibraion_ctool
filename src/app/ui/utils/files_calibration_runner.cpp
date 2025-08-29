@@ -59,7 +59,7 @@ namespace {
       calibrator_options.image_size = image_size;
       calibrator_options.current_cam_index =options.current_index ;
       calibrator_options.estimate_initial_dome_offset =
-          (chessboard_options) && options.housing_calibration.value().first == HousingInterfaceType::DoubleLayerSphericalRefractive;
+          (charucoboard_options) && options.housing_calibration.value().first == HousingInterfaceType::DoubleLayerSphericalRefractive;
       calibrator_options.housing_interface = options.housing_calibration.value().first;
       // calibrator_options.camera_params = options.initial_camera_parameters.value();
       calibrator_options.camera_params = options.initial_camera_parameters;//liheng3

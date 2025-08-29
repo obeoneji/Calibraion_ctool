@@ -148,6 +148,7 @@ namespace calibmar {
     {
       FilesystemImageReader::Options reader_options;
       reader_options.image_directory = options_.images_directory;
+      reader_options.image_read_mode = Pixmap::ReadMode::COLOR_AS_SOURCE;
       // reader_options.cam_index = 0;//liheng1
       reader_options.cam_index = i;//liheng1
       FilesystemImageReader reader(reader_options);    
@@ -265,6 +266,7 @@ namespace calibmar {
             while (reader.HasNext()) {
               Image image;
               image.issystem();
+              image.is_undistort();
               std::unique_ptr<Pixmap> pixmap = std::make_unique<Pixmap>();
               ImageReader::Status reader_status = reader.Next(image, *pixmap);
               FeatureExtractor::Status extractor_status;

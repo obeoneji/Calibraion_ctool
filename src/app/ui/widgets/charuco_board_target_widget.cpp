@@ -46,7 +46,7 @@ namespace calibmar {
     QLabel* frame_num_label = new QLabel(this);
     frame_num_label->setText("Number of frame per camera");
     frame_num_edit_ = new QSpinBox(this);
-    frame_num_edit_->setRange(1, 100);
+    frame_num_edit_->setRange(1, 1000);
     frame_num_edit_->setSingleStep(1);
 
 
